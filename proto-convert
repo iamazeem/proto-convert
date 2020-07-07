@@ -1,0 +1,171 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# proto-convert
+# A command-line tool to convert protobuf messages from binary to JSON and vice versa
+# GitHub: https://github.com/iamAzeem/proto-convert
+#
+# Developed by Azeem Sajid <azeem.sajid@gmail.com>
+
+require 'optparse'
+require 'English'
+
+VERSION = "#{$PROGRAM_NAME} 1.0.0"
+AUTHOR_NAME = 'Azeem Sajid'
+AUTHOR_EMAIL = 'azeem.sajid@gmail.com'
+AUTHOR_INFO = "Developed by #{AUTHOR_NAME} <#{AUTHOR_EMAIL}>"
+REPO_URL = 'https://github.com/iamAzeem/proto-convert'
+
+def compile_proto(filename)
+  file_path = File.expand_path(filename)
+  file_dir = File.dirname(file_path)
+
+  `protoc --ruby_out=#{file_dir} --proto_path=#{file_dir} #{file_path}`
+  raise StandardError, "Invalid schema! [#{filename}] Resolve the error(s)." unless $CHILD_STATUS.success?
+
+  compiled_proto = file_dir + '/' + File.basename(file_path, '.proto') + '_pb.rb'
+  raise StandardError, "Compiled schema not found! [#{compiled_proto}]" unless File.file?(compiled_proto)
+
+  compiled_proto
+end
+
+def valid_msgtype?(compiled_proto, msg_type)
+  msg_types = []
+  File.foreach(compiled_proto) do |line|
+    if line.lstrip.start_with?('add_message')
+      extracted_msg_type = line[/"([^"]*)"/, 1].freeze # regex: <add_message> 'msg_type' <do>
+      msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
+    end
+  end
+
+  msg_types.include?(msg_type)
+end
+
+def msg_class(compiled_proto, msg_type)
+  require compiled_proto
+  msg = Google::Protobuf::DescriptorPool.generated_pool.lookup(msg_type)
+  msg.msgclass
+end
+
+def convert(compiled_proto, msg_type, conversion_mode, input_file, output_file)
+  pb_msg_class = msg_class(compiled_proto, msg_type)
+  raise StandardError, "Message type ['#{msg_type}'] not registered!'" if pb_msg_class.nil?
+
+  begin
+    case conversion_mode
+    when :binary2json
+      input_msg = File.open(input_file, 'rb').read
+      puts ">> [B] #{input_file} (#{input_msg.length} bytes)"
+
+      decoded_msg = pb_msg_class.decode(input_msg)
+      output_msg = pb_msg_class.encode_json(decoded_msg)
+
+      File.open(output_file, 'w').write(output_msg)
+      puts "<< [J] #{output_file} (#{output_msg.length} bytes)"
+    when :json2binary
+      input_msg = File.open(input_file, 'r').read
+      puts ">> [J] #{input_file} (#{input_msg.length} bytes)"
+
+      decoded_msg = pb_msg_class.decode_json(input_msg)
+      output_msg = pb_msg_class.encode(decoded_msg)
+
+      File.open(output_file, 'wb').write(output_msg)
+      puts "<< [B] #{output_file} (#{output_msg.length} bytes)"
+    end
+  rescue Google::Protobuf::ParseError
+    raise StandardError, "Incompatible input message! [msgtype: #{msg_type}] #{$ERROR_INFO}"
+  rescue StandardError
+    raise StandardError, "Conversion failed! #{$ERROR_INFO}"
+  end
+end
+
+def start
+  mandatory_args = %i[mode proto msgtype input output].freeze
+
+  options = {}
+  mandatory_args.each { |arg| options[arg] = nil }
+
+  parser = OptionParser.new do |opts|
+    opts.banner = "Usage: #{$PROGRAM_NAME} -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]"
+    opts.separator ''
+
+    modes = %i[binary2json b2j json2binary j2b].freeze
+    opts.on('-m', '--mode [MODE]', modes, "conversion mode #{modes.map(&:to_s)}") do |mode|
+      raise OptionParser::InvalidArgument unless modes.include?(mode)
+
+      if mode == :b2j
+        mode = :binary2json
+      elsif mode == :j2b
+        mode = :json2binary
+      end
+
+      options[:mode] = mode
+    end
+
+    opts.on('-p', '--proto [FILENAME]', 'protobuf schema (.proto)') do |filename|
+      raise StandardError, "Protobuf schema not found! [#{filename}]" unless File.file?(filename)
+
+      options[:proto] = filename
+    end
+
+    opts.on('-t', '--msgtype [TYPE]', 'fully-qualified message type') do |msgtype|
+      options[:msgtype] = msgtype
+    end
+
+    opts.on('-i', '--input [FILENAME]', 'source file (JSON/binary)') do |filename|
+      raise StandardError, "Source/input file not found! [#{filename}]" unless File.file?(filename)
+
+      options[:input] = filename
+    end
+
+    opts.on('-o', '--output [FILENAME]', 'destination file (binary/JSON)') do |filename|
+      options[:output] = filename
+    end
+
+    opts.on('-v', '--version', 'prints version information') do
+      puts "#{VERSION}\n#{AUTHOR_INFO}"
+      puts "GitHub URL: #{REPO_URL}"
+      exit
+    end
+
+    opts.on('-h', '--help', 'prints help') do
+      puts "#{VERSION}\n\n#{opts}\n#{AUTHOR_INFO}"
+      puts "GitHub URL: #{REPO_URL}"
+      exit
+    end
+  end
+
+  begin
+    parser.parse!
+
+    # Validate missing mandatory arguments
+    missing_args = mandatory_args.select { |arg| options[arg].nil? }
+    raise OptionParser::MissingArgument, 'No arguments provided!' if missing_args.length == mandatory_args.length
+    raise OptionParser::MissingArgument, "--#{missing_args.join(', --')}" unless missing_args.empty?
+
+    # Compile and validate proto and msgtype
+    compiled_proto = compile_proto(options[:proto])
+    msg_type = options[:msgtype]
+    raise OptionParser::InvalidArgument, "--msgtype #{msg_type}" unless valid_msgtype?(compiled_proto, msg_type)
+
+    # Convert and write to output file
+    conversion_mode = options[:mode]
+    input_file = options[:input]
+    output_file = options[:output]
+    convert(compiled_proto, msg_type, conversion_mode, input_file, output_file)
+  rescue OptionParser::InvalidOption, OptionParser::InvalidArgument, OptionParser::MissingArgument
+    puts $ERROR_INFO
+    puts "\n#{VERSION}\n\n#{parser}\n#{AUTHOR_INFO}"
+    exit 1
+  rescue LoadError
+    puts "Possible 'import' issue! Use a single self-contianed .proto file! #{$ERROR_INFO}"
+    exit 1
+  rescue StandardError
+    puts "ERROR: #{$ERROR_INFO}"
+    exit 1
+  ensure
+    File.delete(compiled_proto) if !compiled_proto.nil? && File.file?(compiled_proto)
+  end
+end
+
+start
