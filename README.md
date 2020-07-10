@@ -29,7 +29,8 @@ $ bundle
 
 ## Usage
 
-```shell
+```
+$ proto-convert -h
 Usage: proto-convert -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]
 
     -m, --mode [MODE]                conversion mode ["binary2json", "b2j", "json2binary", "j2b"]
