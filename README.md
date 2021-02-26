@@ -1,7 +1,12 @@
 # proto-convert
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://github.com/iamAzeem/proto-convert/blob/master/LICENSE)
-[![RubyGems Downloads](https://img.shields.io/gem/dt/proto-convert?color=blue&style=flat-square&label=Downloads)](https://rubygems.org/gems/proto-convert)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/iamAzeem/proto-convert/blob/master/LICENSE)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/proto-convert)
+[![RubyGems Downloads](https://img.shields.io/gem/dt/proto-convert?color=blue&style=flat-square)](https://rubygems.org/gems/proto-convert)
+
+![Lines of code](https://img.shields.io/tokei/lines/github/iamAzeem/proto-convert?label=LOC)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/proto-convert)
+![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/proto-convert)
 
 A command line tool to convert protobuf messages from binary to JSON and vice versa.
 
@@ -79,11 +84,6 @@ and,
 $ cat test.json
 {"id":123,"body":"test"}
 ```
-
-## Contact
-
-Email: azeem.sajid@gmail.com  
-LinkedIn: https://www.linkedin.com/in/az33msajid
 
 ## License
 
