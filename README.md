@@ -17,19 +17,21 @@ Please make sure that the Protocol Buffers Compiler `protoc` is installed.
 ### RubyGems
 
 ```
-$ gem install proto-convert
+gem install proto-convert
 ```
 
 ### Bundler
 
 Add following line to your Gemfile:
+
 ```ruby
 gem "proto-convert"
 ```
 
 And then execute:
+
 ```
-$ bundle
+bundle
 ```
 
 ## Usage
@@ -51,7 +53,7 @@ Usage: proto-convert -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]
 
 Consider this simple .proto file ([`test.proto`](test/test.proto)):
 
-```
+```protobuf
 syntax = "proto3";
 
 package test;
@@ -65,6 +67,7 @@ message Message {
 These test files (`test.proto`, `test.json`, and `test.bin`) are located in [`test`](test) folder.
 
 **JSON to Binary Conversion**
+
 ```
 $ proto-convert -m json2binary -p test.proto -t test.Message -i test.json -o test.bin
 >> [J] test.json (24 bytes)
@@ -72,6 +75,7 @@ $ proto-convert -m json2binary -p test.proto -t test.Message -i test.json -o tes
 ```
 
 **Binary to JSON Conversion**
+
 ```
 $ proto-convert -m binary2json -p test.proto -t test.Message -i test.bin -o test.json
 >> [B] test.bin (8 bytes)
