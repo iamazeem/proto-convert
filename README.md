@@ -14,7 +14,11 @@ tool to convert the protobuf messages from binary to JSON and vice versa.
 
 ## Installation
 
+### Prerequisites
+
 Please make sure that the Protocol Buffers Compiler `protoc` is installed.
+
+- https://github.com/protocolbuffers/protobuf#protocol-compiler-installation
 
 ### RubyGems
 
@@ -90,6 +94,16 @@ Output:
 $ cat test.json
 {"id":123,"body":"test"}
 ```
+
+## Contribute
+
+- Fork the project.
+- Check out the latest `main` branch.
+- Create a feature or bugfix branch from `main`.
+- Commit and push your changes.
+- Make sure to add tests. See [CI](./.github/workflows/ci.yml).
+- Run Rubocop locally and fix all the lint warnings.
+- Submit the PR.
 
 ## License
 
