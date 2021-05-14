@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+      - '.rubocop.yml'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '.rubocop.yml'
+
+jobs:
+  build-and-test:
+    name: Build and test
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        ruby-version: ['2.5', '2.6', '2.7']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+
+    - name: Bundle install
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    
+    - name: Build and install
+      run: |
+        gem build *.gemspec
+        sudo gem install *.gem
+
+    - name: Test
+      run: |
+        cd test
+        echo "Test # 1: JSON to Binary conversion"
+        proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin
+        echo
+        echo "Test # 2: Binary to JSON conversion"
+        proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json
+        cat test.json | jq
+        echo "--- [DONE] ---"
