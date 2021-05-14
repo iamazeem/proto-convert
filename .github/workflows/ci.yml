@@ -41,12 +41,11 @@ jobs:
 
     - name: Install protoc
       run: |
-        mkdir protoc
-        cd protoc
+        mkdir protoc && cd protoc
         wget https://github.com/protocolbuffers/protobuf/releases/download/v3.17.0/protoc-3.17.0-linux-x86_64.zip
-        unzip *.zip
-        sudo cp ./bin/protoc /usr/bin
-        cd ..
+        unzip protoc-3.17.0-linux-x86_64.zip
+        chmod +x ./bin/protoc && sudo mv ./bin/protoc /usr/local/bin/protoc
+        cd .. && rm -rf ./protoc
         protoc --version
 
     - name: Test
