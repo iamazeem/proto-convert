@@ -8,7 +8,8 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/proto-convert?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/proto-convert?style=flat-square)
 
-A command line tool to convert protobuf messages from binary to JSON and vice versa.
+[proto-convert](https://github.com/iamAzeem/proto-convert) is a command-line
+tool to convert the protobuf messages from binary to JSON and vice versa.
 
 ## Installation
 
@@ -16,27 +17,27 @@ Please make sure that the Protocol Buffers Compiler `protoc` is installed.
 
 ### RubyGems
 
-```
+```shell
 gem install proto-convert
 ```
 
 ### Bundler
 
-Add following line to your Gemfile:
+Add the following line to your Gemfile:
 
 ```ruby
-gem "proto-convert"
+gem 'proto-convert'
 ```
 
 And then execute:
 
-```
+```shell
 bundle
 ```
 
 ## Usage
 
-```
+```text
 $ proto-convert -h
 Usage: proto-convert -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]
 
@@ -64,27 +65,27 @@ message Message {
 }
 ```
 
-These test files (`test.proto`, `test.json`, and `test.bin`) are located in [`test`](test) folder.
+See [`test`](test) directory for test files.
 
-**JSON to Binary Conversion**
+#### JSON to Binary Conversion
 
-```
-$ proto-convert -m json2binary -p test.proto -t test.Message -i test.json -o test.bin
+```text
+$ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin
 >> [J] test.json (24 bytes)
 << [B] test.bin (8 bytes)
 ```
 
-**Binary to JSON Conversion**
+#### Binary to JSON Conversion
 
-```
-$ proto-convert -m binary2json -p test.proto -t test.Message -i test.bin -o test.json
+```text
+$ proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json
 >> [B] test.bin (8 bytes)
 << [J] test.json (24 bytes)
 ```
 
-and,
+Output:
 
-```
+```text
 $ cat test.json
 {"id":123,"body":"test"}
 ```
