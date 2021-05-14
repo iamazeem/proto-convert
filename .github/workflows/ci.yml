@@ -56,5 +56,5 @@ jobs:
         echo
         echo "Test # 2: Binary to JSON conversion"
         proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json
-        cat test.json | jq
+        cat test.json | jq .
         echo "--- [DONE] ---"
