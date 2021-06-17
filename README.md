@@ -9,6 +9,21 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/proto-convert?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/proto-convert?style=flat-square)
 
+- [proto-convert](#proto-convert)
+  - [Overview](#overview)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [RubyGems](#rubygems)
+    - [Bundler](#bundler)
+  - [Usage](#usage)
+    - [Test Run](#test-run)
+      - [JSON to Binary Conversion](#json-to-binary-conversion)
+      - [Binary to JSON Conversion](#binary-to-json-conversion)
+  - [Contribute](#contribute)
+  - [License](#license)
+
+## Overview
+
 [proto-convert](https://github.com/iamAzeem/proto-convert) is a command-line
 tool to convert the protobuf messages from binary to JSON and vice versa.
 
