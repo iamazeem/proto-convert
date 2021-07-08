@@ -37,8 +37,10 @@ jobs:
     - name: Install protoc
       run: |
         PROTOC_VER="3.17.3"
-        PROTOC_PKG="protoc-$PROTOC_VER-linux-x86_64.zip"
-        if [ "$RUNNER_OS" == "macOS" ]; then
+        PROTOC_PKG=""
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          PROTOC_PKG="protoc-$PROTOC_VER-linux-x86_64.zip"
+        elif [ "$RUNNER_OS" == "macOS" ]; then
           PROTOC_PKG="protoc-$PROTOC_VER-osx-x86_64.zip"
         else
           echo "$RUNNER_OS not supported"
