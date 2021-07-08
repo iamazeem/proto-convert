@@ -47,10 +47,13 @@ jobs:
           exit 1
         fi
         echo "Installing $PROTOC_PKG"
-        curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VER/$PROTOC_PKG
-        sudo unzip -o $PROTOC_PKG bin/protoc -d /usr/local
-        sudo unzip -o $PROTOC_PKG 'include/*' -d /usr/local
-        rm -f $PROTOC_PKG
+        mkdir protoc && cd protoc
+        wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VER/$PROTOC_PKG
+        unzip $PROTOC_PKG
+        chmod +x ./bin/protoc
+        sudo mv ./bin/protoc /usr/local/bin/protoc
+        sudo mv ./include/* /usr/local/include/
+        rm -rf protoc
         protoc --version
         echo "$PROTOC_PKG installed successfully"
 
