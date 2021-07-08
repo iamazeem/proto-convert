@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package service.logging;
+
+import "google/protobuf/timestamp.proto";
+
+message Log {
+    message Context {
+        google.protobuf.Timestamp timestamp = 1;
+        string host_or_ip = 2;
+        string service_name = 3;
+        string user = 4;
+    }
+
+    enum Level {
+        DEBUG = 0;
+        INFO = 1;
+        WARN = 2;
+        ERROR = 3;
+        FATAL = 4;
+    }
+
+    Context context = 1;
+    Level level = 2;
+    string message = 3;
+}
