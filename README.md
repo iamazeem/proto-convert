@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # proto-convert
 
 [![ci](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml)
@@ -9,33 +10,44 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/proto-convert?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/proto-convert?style=flat-square)
 
-- [proto-convert](#proto-convert)
-  - [Overview](#overview)
-  - [Installation](#installation)
-    - [Prerequisites](#prerequisites)
-    - [RubyGems](#rubygems)
-    - [Bundler](#bundler)
-  - [Usage](#usage)
-    - [Test Run](#test-run)
-      - [JSON to Binary Conversion](#json-to-binary-conversion)
-      - [Binary to JSON Conversion](#binary-to-json-conversion)
-  - [Contribute](#contribute)
-  - [License](#license)
+- [Overview](#overview)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [RubyGems](#rubygems)
+  - [Bundler](#bundler)
+- [Usage](#usage)
+- [Test Run](#test-run)
+  - [JSON to Binary Conversion](#json-to-binary-conversion)
+  - [Binary to JSON Conversion](#binary-to-json-conversion)
+- [Contribute](#contribute)
+- [License](#license)
 
 ## Overview
 
 [proto-convert](https://github.com/iamAzeem/proto-convert) is a command-line
 tool to convert the protobuf messages from binary to JSON and vice versa.
 
+[Tested](./test/run_tests.sh) on:
+
+| OS            | Ruby Version  |
+|:-------------:|:-------------:|
+| Ubuntu 18.04  | 2.5, 2.6, 2.7 |
+| Ubuntu 20.04  | 2.5, 2.6, 2.7 |
+| MacOS 10.15   | 2.5, 2.6, 2.7 |
+
+For details, see [CI workflow](./.github/workflows/ci.yml).
+
 ## Installation
 
 ### Prerequisites
 
-Please make sure that the Protocol Buffers Compiler `protoc` is installed.
-
-- https://github.com/protocolbuffers/protobuf#protocol-compiler-installation
+Make sure that the Protocol Buffers Compiler `protoc` is installed. Here are the
+[instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation)
+to install it.
 
 ### RubyGems
+
+Install via RubyGems (you might need the `sudo` privileges):
 
 ```shell
 gem install proto-convert
@@ -43,7 +55,7 @@ gem install proto-convert
 
 ### Bundler
 
-Add the following line to your Gemfile:
+With Bundler, add the following line to your Gemfile:
 
 ```ruby
 gem 'proto-convert'
@@ -70,7 +82,7 @@ Usage: proto-convert -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]
     -h, --help                       prints help
 ```
 
-### Test Run
+## Test Run
 
 Consider this simple .proto file ([`test.proto`](test/test.proto)):
 
@@ -87,7 +99,7 @@ message Message {
 
 See [`test`](test) directory for test files.
 
-#### JSON to Binary Conversion
+### JSON to Binary Conversion
 
 ```text
 $ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin
@@ -95,7 +107,7 @@ $ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin
 << [B] test.bin (8 bytes)
 ```
 
-#### Binary to JSON Conversion
+### Binary to JSON Conversion
 
 ```text
 $ proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json
@@ -118,6 +130,7 @@ $ cat test.json
 - Commit and push your changes.
 - Make sure to add tests. See [CI](./.github/workflows/ci.yml).
 - Run Rubocop locally and fix all the lint warnings.
+- For any [README](./README.md) changes, update TOC accordingly.
 - Submit the PR.
 
 ## License
