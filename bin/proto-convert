@@ -70,8 +70,8 @@ def compile_proto(filename)
   raise StandardError, "Compiled schema not found! [#{compiled_proto}]" unless File.file?(compiled_proto)
 
   if $debug
-    puts "   Validatd [#{compiled_proto}]"
-    puts "<< Compilion and validation complete! [#{file_path} => #{compiled_proto}]"
+    puts "   Validated [#{compiled_proto}]"
+    puts "<< Compilation and validation complete! [#{file_path} => #{compiled_proto}]"
   end
 
   compiled_proto
@@ -142,7 +142,7 @@ def convert(compiled_proto, msg_type, conversion_mode, input_file, output_file)
     raise StandardError, "Conversion failed! #{$ERROR_INFO}"
   end
 
-  puts ">> Converion complete! [#{input_file}] => [#{output_file}]" if $debug
+  puts ">> Conversion complete! [#{input_file}] => [#{output_file}]" if $debug
 end
 
 def start

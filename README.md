@@ -132,8 +132,8 @@ $ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin -d
 
    Compiled [/home/azeem/test/test.proto]
    Validating [/home/azeem/test/test_pb.rb]
-   Validatd [/home/azeem/test/test_pb.rb]
-<< Compilion and validation complete! [/home/azeem/test/test.proto => /home/azeem/test/test_pb.rb]
+   Validated [/home/azeem/test/test_pb.rb]
+<< Compilation and validation complete! [/home/azeem/test/test.proto => /home/azeem/test/test_pb.rb]
 
 >> Validating msgtype [test.Message] in [/home/azeem/test/test_pb.rb]
    msgtype [test.Message] available? yes
@@ -144,7 +144,7 @@ $ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin -d
 >> Converting [test.json], mode: json2binary
 >> [J] test.json (24 bytes)
 << [B] test.bin (8 bytes)
->> Converion complete! [test.json] => [test.bin]
+>> Conversion complete! [test.json] => [test.bin]
 ```
 
 ### Binary to JSON Conversion
@@ -180,8 +180,8 @@ $ proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json -d
 
    Compiled [/home/azeem/test/test.proto]
    Validating [/home/azeem/test/test_pb.rb]
-   Validatd [/home/azeem/test/test_pb.rb]
-<< Compilion and validation complete! [/home/azeem/test/test.proto => /home/azeem/test/test_pb.rb]
+   Validated [/home/azeem/test/test_pb.rb]
+<< Compilation and validation complete! [/home/azeem/test/test.proto => /home/azeem/test/test_pb.rb]
 
 >> Validating msgtype [test.Message] in [/home/azeem/test/test_pb.rb]
    msgtype [test.Message] available? yes
@@ -192,7 +192,7 @@ $ proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json -d
 >> Converting [test.bin], mode: binary2json
 >> [B] test.bin (8 bytes)
 << [J] test.json (24 bytes)
->> Converion complete! [test.bin] => [test.json]
+>> Conversion complete! [test.bin] => [test.json]
 ```
 
 Output:
