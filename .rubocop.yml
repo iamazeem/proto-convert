@@ -23,3 +23,7 @@ Metrics/AbcSize:
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
+
+GlobalVars:
+  AllowedVariables:
+    - $debug
