@@ -32,26 +32,54 @@
 require 'optparse'
 require 'English'
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 AUTHOR_NAME = 'Azeem Sajid'
 AUTHOR_EMAIL = '<azeem.sajid@gmail.com>'
 AUTHOR_INFO = "Author: #{AUTHOR_NAME} #{AUTHOR_EMAIL}"
 AUTHOR_GITHUB = 'GitHub: https://github.com/iamAzeem/proto-convert'
 
+$debug = false
+
 def compile_proto(filename)
+  puts "\n>> Compiling [#{filename}]" if $debug
+
   file_path = File.expand_path(filename)
   file_dir = File.dirname(file_path)
 
-  `protoc --ruby_out=#{file_dir} --proto_path=#{file_dir} #{file_path}`
+  if $debug
+    puts "   File path: #{file_path}"
+    protoc_version = `protoc --version`.chomp.split(' ')[1]
+    puts "   Running protoc #{protoc_version}:"
+  end
+
+  protoc_cmd =
+    "     protoc \\\n" \
+    "       --ruby_out=#{file_dir} \\\n" \
+    "       --proto_path=#{file_dir} \\\n" \
+    "       #{file_path}"
+
+  puts "\n#{protoc_cmd}" if $debug
+
+  `#{protoc_cmd}`
   raise StandardError, "Invalid schema! [#{filename}] Resolve error(s)." unless $CHILD_STATUS.success?
 
+  puts "\n   Compiled [#{file_path}]" if $debug
+
   compiled_proto = "#{file_dir}/#{File.basename(file_path, '.proto')}_pb.rb"
+  puts "   Validating [#{compiled_proto}]" if $debug
   raise StandardError, "Compiled schema not found! [#{compiled_proto}]" unless File.file?(compiled_proto)
+
+  if $debug
+    puts "   Validatd [#{compiled_proto}]"
+    puts "<< Compilion and validation complete! [#{file_path} => #{compiled_proto}]"
+  end
 
   compiled_proto
 end
 
 def valid_msgtype?(compiled_proto, msg_type)
+  puts "\n>> Validating msgtype [#{msg_type}] in [#{compiled_proto}]" if $debug
+
   msg_types = []
   File.foreach(compiled_proto) do |line|
     if line.lstrip.start_with?('add_message')
@@ -60,7 +88,19 @@ def valid_msgtype?(compiled_proto, msg_type)
     end
   end
 
-  msg_types.include?(msg_type)
+  is_valid = msg_types.include?(msg_type)
+
+  if $debug
+    puts "   msgtype [#{msg_type}] available? #{is_valid ? 'yes' : 'no'}"
+    puts '   Available types:'
+    msg_types.each do |t|
+      puts "   - #{t}"
+    end
+  end
+
+  puts "<< Validation of msgtype [#{msg_type}] complete!" if $debug
+
+  is_valid
 end
 
 def msg_class(compiled_proto, msg_type)
@@ -70,6 +110,8 @@ def msg_class(compiled_proto, msg_type)
 end
 
 def convert(compiled_proto, msg_type, conversion_mode, input_file, output_file)
+  puts "\n>> Converting [#{input_file}], mode: #{conversion_mode}" if $debug
+
   pb_msg_class = msg_class(compiled_proto, msg_type)
   raise StandardError, "Message type ['#{msg_type}'] not registered!'" if pb_msg_class.nil?
 
@@ -99,6 +141,8 @@ def convert(compiled_proto, msg_type, conversion_mode, input_file, output_file)
   rescue StandardError
     raise StandardError, "Conversion failed! #{$ERROR_INFO}"
   end
+
+  puts ">> Converion complete! [#{input_file}] => [#{output_file}]" if $debug
 end
 
 def start
@@ -145,9 +189,9 @@ def start
       options[:output] = filename
     end
 
-    opts.on('-v', '--version', 'prints version information') do
-      puts "#{$PROGRAM_NAME} #{VERSION}\n#{AUTHOR_INFO}\n#{AUTHOR_GITHUB}"
-      exit
+    opts.on('-d', '--debug', 'prints debugging information') do
+      options[:debug] = true
+      $debug = true
     end
 
     opts.on('-h', '--help', 'prints help') do
@@ -159,10 +203,19 @@ def start
   begin
     parser.parse!
 
+    puts ">> #{$PROGRAM_NAME} #{VERSION} [debug mode]" if $debug
+
     # Validate missing mandatory arguments
     missing_args = mandatory_args.select { |arg| options[arg].nil? }
     raise OptionParser::MissingArgument, 'No arguments provided!' if missing_args.length == mandatory_args.length
     raise OptionParser::MissingArgument, "--#{missing_args.join(', --')}" unless missing_args.empty?
+
+    if $debug
+      puts "\n>> Arguments:"
+      options.each do |arg, val|
+        puts format('   %<arg>8s : %<val>s', arg: arg, val: val)
+      end
+    end
 
     # Compile and validate proto and msgtype
     compiled_proto = compile_proto(options[:proto])
@@ -179,7 +232,7 @@ def start
     puts "\n#{$PROGRAM_NAME} #{VERSION}\n\n#{parser}\n#{AUTHOR_INFO}"
     exit 1
   rescue LoadError
-    puts "Possible 'import' issue! Use a single self-contianed .proto file! #{$ERROR_INFO}"
+    puts "ERROR: Possible 'import' issue! #{$ERROR_INFO}"
     exit 1
   rescue StandardError
     puts "ERROR: #{$ERROR_INFO}"
