@@ -78,7 +78,7 @@ Usage: proto-convert -m [mode] -p [proto] -t [msgtype] -i [input] -o [output]
     -t, --msgtype [TYPE]             fully-qualified message type
     -i, --input [FILENAME]           source file (JSON/binary)
     -o, --output [FILENAME]          destination file (binary/JSON)
-    -v, --version                    prints version information
+    -d, --debug                      prints debugging information
     -h, --help                       prints help
 ```
 
@@ -107,12 +107,92 @@ $ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin
 << [B] test.bin (8 bytes)
 ```
 
+With debug flag `-d`:
+
+```text
+$ proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test.bin -d
+>> /usr/local/bin/proto-convert 0.3.0 [debug mode]
+
+>> Arguments:
+       mode : json2binary
+      proto : log.proto
+    msgtype : service.logging.Log
+      input : log.json
+     output : log-out.bin
+      debug : true
+
+>> Compiling [log.proto]
+   File path: /home/azeem/test/log.proto
+   Running protoc 3.12.3:
+
+     protoc \
+       --ruby_out=/home/azeem/test \
+       --proto_path=/home/azeem/test \
+       /home/azeem/test/log.proto
+
+   Compiled [/home/azeem/test/log.proto]
+   Validating [/home/azeem/test/log_pb.rb]
+   Validatd [/home/azeem/test/log_pb.rb]
+<< Compilion and validation complete! [/home/azeem/test/log.proto => /home/azeem/test/log_pb.rb]
+
+>> Validating msgtype [service.logging.Log] in [/home/azeem/test/log_pb.rb]
+   msgtype [service.logging.Log] available? yes
+   Available types:
+   - service.logging.Log
+   - service.logging.Log.Context
+<< Validation of msgtype [service.logging.Log] complete!
+
+>> Converting [log.json], mode: json2binary
+>> [J] log.json (183 bytes)
+<< [B] log-out.bin (86 bytes)
+>> Converion complete! [log.json] => [log-out.bin]
+```
+
 ### Binary to JSON Conversion
 
 ```text
 $ proto-convert -m b2j -p test.proto -t test.Message -i test.bin -o test.json
 >> [B] test.bin (8 bytes)
 << [J] test.json (24 bytes)
+```
+
+With debug flag `-d`:
+
+```text
+>> /usr/local/bin/proto-convert 0.3.0 [debug mode]
+
+>> Arguments:
+       mode : binary2json
+      proto : test.proto
+    msgtype : test.Message
+      input : test.bin
+     output : test.json
+      debug : true
+
+>> Compiling [test.proto]
+   File path: /home/azeem/test/test.proto
+   Running protoc 3.12.3:
+
+     protoc \
+       --ruby_out=/home/azeem/test \
+       --proto_path=/home/azeem/test \
+       /home/azeem/test/test.proto
+
+   Compiled [/home/azeem/test/test.proto]
+   Validating [/home/azeem/test/test_pb.rb]
+   Validatd [/home/azeem/test/test_pb.rb]
+<< Compilion and validation complete! [/home/azeem/test/test.proto => /home/azeem/test/test_pb.rb]
+
+>> Validating msgtype [test.Message] in [/home/azeem/test/test_pb.rb]
+   msgtype [test.Message] available? yes
+   Available types:
+   - test.Message
+<< Validation of msgtype [test.Message] complete!
+
+>> Converting [test.bin], mode: binary2json
+>> [B] test.bin (8 bytes)
+<< [J] test.json (24 bytes)
+>> Converion complete! [test.bin] => [test.json]
 ```
 
 Output:
