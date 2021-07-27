@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name           = 'proto-convert'
-  spec.version        = '0.3.0'
+  spec.version        = '0.4.0'
   spec.date           = '2021-05-14'
   spec.authors        = ['Azeem Sajid']
   spec.email          = ['azeem.sajid@gmail.com']
