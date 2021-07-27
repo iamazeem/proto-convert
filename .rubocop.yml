@@ -26,4 +26,4 @@ Gemspec/RequiredRubyVersion:
 
 GlobalVars:
   AllowedVariables:
-    - $debug
+    - $verbose
