@@ -1,4 +1,3 @@
-<!-- omit in toc -->
 # proto-convert
 
 [![ci](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml)
@@ -9,18 +8,6 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/iamAzeem/proto-convert?label=LOC&style=flat-square)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/iamAzeem/proto-convert?style=flat-square)
 ![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/proto-convert?style=flat-square)
-
-- [Overview](#overview)
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [RubyGems](#rubygems)
-  - [Bundler](#bundler)
-- [Usage](#usage)
-- [Test Run](#test-run)
-  - [JSON to Binary Conversion](#json-to-binary-conversion)
-  - [Binary to JSON Conversion](#binary-to-json-conversion)
-- [Contribute](#contribute)
-- [License](#license)
 
 ## Overview
 
