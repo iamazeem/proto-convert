@@ -35,7 +35,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Install protoc
-      uses: arduino/setup-protoc@v1
+      uses: arduino/setup-protoc@master
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
