@@ -15,13 +15,9 @@ For details, please see [CI workflow](./.github/workflows/ci.yml).
 
 ## Installation
 
-### Prerequisites
-
 Make sure that the Protocol Buffers Compiler `protoc` is installed. Follow these
 [instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation)
 to install `protoc`.
-
-### RubyGems
 
 Install via [RubyGems](https://rubygems.org/pages/download):
 
