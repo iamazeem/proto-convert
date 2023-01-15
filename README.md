@@ -6,10 +6,11 @@
 [![RubyGems Downloads](https://img.shields.io/gem/dt/proto-convert?style=flat-square)](https://rubygems.org/gems/proto-convert)
 [![Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20A%20Coffee-orange.svg?style=flat-square)](https://www.buymeacoffee.com/iamazeem)
 
-[proto-convert](https://github.com/iamAzeem/proto-convert) is a command-line
-tool to convert the protobuf messages from binary to JSON and vice versa.
+[proto-convert](https://github.com/iamAzeem/proto-convert) is a CLI tool
+to convert [protobuf](https://github.com/protocolbuffers/protobuf) messages
+from binary to [JSON](https://www.json.org/json-en.html) and vice versa.
 
-[Tested](./test/run_tests.sh) on Ubuntu and mcaOS.
+[Tested](./test/run_tests.sh) on Ubuntu and macOS.
 For details, please see [CI workflow](./.github/workflows/ci.yml).
 
 ## Installation
