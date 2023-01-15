@@ -15,8 +15,8 @@ jobs:
     name: Build and test
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, macos-10.15]
-        ruby-version: ['2.5', '2.6', '2.7']
+        os: [ubuntu-latest, macos-latest]
+        ruby-version: ['2.6', '2.7']
 
     runs-on: ${{ matrix.os }}
 
@@ -33,29 +33,9 @@ jobs:
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
-    
+
     - name: Install protoc
-      run: |
-        PROTOC_VER="3.17.3"
-        PROTOC_PKG=""
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          PROTOC_PKG="protoc-$PROTOC_VER-linux-x86_64.zip"
-        elif [ "$RUNNER_OS" == "macOS" ]; then
-          PROTOC_PKG="protoc-$PROTOC_VER-osx-x86_64.zip"
-        else
-          echo "$RUNNER_OS not supported"
-          exit 1
-        fi
-        echo "Installing $PROTOC_PKG"
-        mkdir protoc && cd protoc
-        wget https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VER/$PROTOC_PKG
-        unzip $PROTOC_PKG
-        chmod +x ./bin/protoc
-        sudo mv ./bin/protoc /usr/local/bin/protoc
-        sudo mv ./include/* /usr/local/include/
-        rm -rf protoc
-        protoc --version
-        echo "$PROTOC_PKG installed successfully"
+      uses: arduino/setup-protoc@v1
 
     - name: Build and install
       run: |
