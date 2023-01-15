@@ -1,51 +1,31 @@
 # proto-convert
 
 [![ci](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iamazeem/proto-convert/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/iamAzeem/proto-convert/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-darkgreen.svg?style=flat-square)](https://github.com/iamAzeem/proto-convert/blob/master/LICENSE)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/proto-convert?style=flat-square)
 [![RubyGems Downloads](https://img.shields.io/gem/dt/proto-convert?style=flat-square)](https://rubygems.org/gems/proto-convert)
+[![Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20A%20Coffee-orange.svg?style=flat-square)](https://www.buymeacoffee.com/iamazeem)
 
 [proto-convert](https://github.com/iamAzeem/proto-convert) is a command-line
 tool to convert the protobuf messages from binary to JSON and vice versa.
 
-[Tested](./test/run_tests.sh) on:
-
-| OS            | Ruby Version  |
-|:-------------:|:-------------:|
-| Ubuntu 18.04  | 2.5, 2.6, 2.7 |
-| Ubuntu 20.04  | 2.5, 2.6, 2.7 |
-| MacOS 10.15   | 2.5, 2.6, 2.7 |
-
-For details, see [CI workflow](./.github/workflows/ci.yml).
+[Tested](./test/run_tests.sh) on Ubuntu and mcaOS.
+For details, please see [CI workflow](./.github/workflows/ci.yml).
 
 ## Installation
 
 ### Prerequisites
 
-Make sure that the Protocol Buffers Compiler `protoc` is installed. Here are the
+Make sure that the Protocol Buffers Compiler `protoc` is installed. Follow these
 [instructions](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation)
-to install it.
+to install `protoc`.
 
 ### RubyGems
 
-Install via RubyGems (you might need the `sudo` privileges):
+Install via [RubyGems](https://rubygems.org/pages/download):
 
 ```shell
 gem install proto-convert
-```
-
-### Bundler
-
-With Bundler, add the following line to your Gemfile:
-
-```ruby
-gem 'proto-convert'
-```
-
-And then execute:
-
-```shell
-bundle
 ```
 
 ## Usage
@@ -111,13 +91,12 @@ $ cat test.json
 
 ## Contribute
 
-- Fork the project.
+- [Fork](https://github.com/iamazeem/proto-convert/fork) the project.
 - Check out the latest `main` branch.
-- Create a feature or bugfix branch from `main`.
+- Create a `feature` or `bugfix` branch from `main`.
 - Commit and push your changes.
 - Make sure to add tests. See [CI](./.github/workflows/ci.yml).
-- Run Rubocop locally and fix all the lint warnings.
-- For any [README](./README.md) changes, update TOC accordingly.
+- Run [Rubocop](https://github.com/rubocop/rubocop) and fix the lint errors.
 - Submit the PR.
 
 ## License
