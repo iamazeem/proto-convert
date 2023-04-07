@@ -20,6 +20,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
     - uses: actions/checkout@v3
 
@@ -42,9 +46,8 @@ jobs:
     - name: Build and install
       run: |
         gem build *.gemspec
-        sudo gem install *.gem
+        gem install *.gem
         proto-convert -h
-        echo "proto-convert installed successfully"
 
     - name: Test
       run: ./test/run_tests.sh
