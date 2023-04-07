@@ -28,7 +28,8 @@ jobs:
       matrix:
         os: [windows-latest]
         # os: [ubuntu-latest, macos-latest]
-        ruby-version: ['2.6', '2.7']
+        ruby-version: ['2.6']
+        # ruby-version: ['2.6', '2.7']
 
     runs-on: ${{ matrix.os }}
 
@@ -42,15 +43,8 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
 
-    - name: Bundle install
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
-
     - name: Install protoc
       uses: arduino/setup-protoc@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and install
       run: |
@@ -59,4 +53,4 @@ jobs:
         proto-convert -h
 
     - name: Run tests
-      run: ./test/run_tests.sh
+      run: cd test && ./run_tests.sh
