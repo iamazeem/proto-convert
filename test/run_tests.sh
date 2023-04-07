@@ -5,7 +5,7 @@ set -e
 echo "Running tests"
 
 echo "Test # 1: JSON to Binary conversion (test.proto)"
-proto-convert -m j2b -p "$PWD/test.proto" -t test.Message -i test.json -o test-out.bin -v
+proto-convert -m j2b -p test.proto -t test.Message -i test.json -o test-out.bin -v
 diff test.bin test-out.bin && rm test-out.bin
 
 echo "Test # 2: Binary to JSON conversion (test.proto)"

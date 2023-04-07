@@ -2,21 +2,12 @@ name: ci
 
 on:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.rubocop.yml'
+    branches: [main]
+    paths-ignore: ['**.md', '.rubocop.yml']
   pull_request:
-    branches:
-      - main
-    types:
-      - opened
-      - synchronize
-      - reopened
-    paths-ignore:
-      - '**.md'
-      - '.rubocop.yml'
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths-ignore: ['**.md', '.rubocop.yml']
 
 defaults:
   run:
@@ -26,15 +17,13 @@ jobs:
   build-and-test:
     strategy:
       matrix:
-        os: [windows-latest]
-        # os: [ubuntu-latest, macos-latest]
-        ruby-version: ['2.6']
-        # ruby-version: ['2.6', '2.7']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        ruby-version: ['2.6', '2.7']
 
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout ${{ github.repository }}
+    - name: Checkout [${{ github.repository }}]
       uses: actions/checkout@v3
 
     - name: Set up Ruby ${{ matrix.ruby-version }}
@@ -52,5 +41,6 @@ jobs:
         gem install *.gem
         proto-convert -h
 
-    - name: Run tests
+    - name: Run tests [${{ matrix.os }}]
+      if: ${{ runner.os != 'Windows' }}
       run: cd test && ./run_tests.sh
