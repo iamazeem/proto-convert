@@ -2,49 +2,47 @@ name: ci
 
 on:
   push:
-    paths-ignore:
-      - '**.md'
-      - '.rubocop.yml'
+    branches: [main]
+    paths-ignore: ['**.md', '.rubocop.yml']
   pull_request:
-    paths-ignore:
-      - '**.md'
-      - '.rubocop.yml'
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths-ignore: ['**.md', '.rubocop.yml']
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   build-and-test:
-    name: Build and test
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         ruby-version: ['2.6', '2.7']
 
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout [${{ github.repository }}]
+      uses: actions/checkout@v3
 
-    - name: Set up Ruby
+    - name: Set up Ruby ${{ matrix.ruby-version }}
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
 
-    - name: Bundle install
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
-
     - name: Install protoc
-      uses: arduino/setup-protoc@master
+      uses: arduino/setup-protoc@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and install
       run: |
         gem build *.gemspec
-        sudo gem install *.gem
+        gem install *.gem
         proto-convert -h
-        echo "proto-convert installed successfully"
 
-    - name: Test
-      run: ./test/run_tests.sh
+    - name: Run tests [${{ matrix.os }}]
+      if: ${{ runner.os != 'Windows' }}
+      run: cd test && ./run_tests.sh
