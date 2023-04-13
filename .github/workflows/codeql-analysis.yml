@@ -1,14 +1,16 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   analyze:
-    name: Analyze
     runs-on: ubuntu-latest
+
     permissions:
       actions: read
       contents: read
@@ -17,17 +19,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'ruby' ]
+        language: [ruby]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout [${{ github.repository }}]
+        uses: actions/checkout@v3
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
