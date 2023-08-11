@@ -25,6 +25,17 @@ Install `proto-convert` with [RubyGems](https://rubygems.org/pages/download):
 gem install proto-convert
 ```
 
+Depending on your installed Ruby version, the latest `google-protobuf` may not
+install due to compatibility issues. You need to install the older version
+yourself or you may choose to upgrade to a later Ruby version.
+
+It has also been observed that the installed `protoc` and `google-protobuf` gem
+may be incompatible and may result into compilation failure of the `input`
+file on runtime.
+
+- For Ruby 2.6, `protoc` v3.17.3 and `google-protobuf` v3.12 work fine.
+- For Ruby 2.7 and later, the latest versions of both should work fine.
+
 ## Usage
 
 Run `proto-convert -h` for usage help.
@@ -85,12 +96,6 @@ Output:
 $ cat test.json
 {"id":123,"body":"test"}
 ```
-
-## Known Issues
-
-- It has been observed that the installed `protoc` and `google-protobuf` gem
-  may be incompatible and may result into compilation failure of the `input`
-  file.
 
 ## Contribute
 
