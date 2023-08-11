@@ -32,7 +32,7 @@
 require 'optparse'
 require 'English'
 
-VERSION = '0.4.0'
+VERSION = '0.4.1'
 AUTHOR_NAME = 'Azeem Sajid'
 AUTHOR_EMAIL = '<azeem.sajid@gmail.com>'
 AUTHOR_INFO = "Author: #{AUTHOR_NAME} #{AUTHOR_EMAIL}"
@@ -68,18 +68,19 @@ def compile_proto(filename)
 end
 
 def valid_msgtype?(compiled_proto, msg_type)
-  if $verbose
-    puts "\n>> Validate msgtype"
-    puts "   msgtype : #{msg_type}"
-    puts "   pb file : #{compiled_proto}"
-  end
-
   msg_types = []
   File.foreach(compiled_proto) do |line|
     if line.include?('::Google::Protobuf::DescriptorPool.generated_pool.lookup')
       extracted_msg_type = line[/"([^"]*)"/, 1].freeze
       msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
     end
+  end
+
+  if $verbose
+    puts "\n>> Validate msgtype"
+    puts "   msgtype : #{msg_type}"
+    puts "   pb file : #{compiled_proto}"
+    puts "   pb types: #{msg_types}"
   end
 
   is_valid = msg_types.include?(msg_type)
