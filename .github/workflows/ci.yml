@@ -44,5 +44,5 @@ jobs:
         proto-convert -h
 
     - name: Run tests [${{ matrix.os }}]
-      if: ${{ runner.os != 'Windows' }}
+      shell: bash
       run: cd test && ./run_tests.sh
