@@ -33,7 +33,7 @@ jobs:
         bundler-cache: true
 
     - name: Install protoc
-      uses: arduino/setup-protoc@master
+      uses: arduino/setup-protoc@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         version: 3.17.3
