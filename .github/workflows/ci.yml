@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby-version: ['2.6', '2.7']
+        ruby-version: ['2.6', '2.7', '3.5']
 
     runs-on: ${{ matrix.os }}
 
@@ -37,6 +37,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         version: ${{ matrix.ruby-version == '2.6' && '3.x' || '' }}
+        include-pre-releases: true
 
     - name: Build and install
       shell: bash
