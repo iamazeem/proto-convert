@@ -26,7 +26,7 @@ jobs:
     - name: Checkout [${{ github.repository }}]
       uses: actions/checkout@v3
 
-    - name: Set up Ruby ${{ matrix.ruby-version }}
+    - name: Set up Ruby [${{ matrix.ruby-version }}]
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
@@ -36,19 +36,10 @@ jobs:
       uses: arduino/setup-protoc@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        # version: ${{ matrix.ruby-version == '2.6' && '3.x' || '' }}
-        # include-pre-releases: true
 
     - name: Build and install
       shell: bash
-      # env:
-      #   RUBY_VERSION: ${{ matrix.ruby-version }}
       run: |
-        # if [[ $RUBY_VERSION == '2.6' ]]; then
-        #   gem install google-protobuf -v 3.12.2
-        # else
-        #   gem install google-protobuf
-        # fi
         gem build *.gemspec
         gem install *.gem
         proto-convert --help
