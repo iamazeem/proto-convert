@@ -39,7 +39,7 @@ jobs:
 
     - name: Build and install
       run: |
-        gem install google-protobuf -v 3.12.2
+        gem install google-protobuf #-v 3.12.2
         gem build *.gemspec
         gem install *.gem
         proto-convert -h
