@@ -80,8 +80,8 @@ def valid_msgtype?(compiled_proto, msg_type)
 
   msg_types = []
   File.foreach(compiled_proto) do |line|
-    if line.lstrip.start_with?('add_message')
-      extracted_msg_type = line[/"([^"]*)"/, 1].freeze # regex: <add_message> 'msg_type' <do>
+    if line.include?('::Google::Protobuf::DescriptorPool.generated_pool.lookup')
+      extracted_msg_type = line[/"([^"]*)"/, 1].freeze
       msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
     end
   end
