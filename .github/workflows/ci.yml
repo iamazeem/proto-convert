@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby-version: ['2.6', '2.7']
+        ruby-version: ['2.7']
 
     runs-on: ${{ matrix.os }}
 
@@ -39,7 +39,7 @@ jobs:
 
     - name: Build and install
       run: |
-        gem install google-protobuf #-v 3.12.2
+        gem install google-protobuf -v 3.12.2
         gem build *.gemspec
         gem install *.gem
         proto-convert -h
