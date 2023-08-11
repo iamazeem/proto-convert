@@ -32,7 +32,7 @@
 require 'optparse'
 require 'English'
 
-VERSION = '0.4.0'
+VERSION = '0.4.1'
 AUTHOR_NAME = 'Azeem Sajid'
 AUTHOR_EMAIL = '<azeem.sajid@gmail.com>'
 AUTHOR_INFO = "Author: #{AUTHOR_NAME} #{AUTHOR_EMAIL}"
@@ -52,13 +52,9 @@ def compile_proto(filename)
     puts "   proto file path : #{file_path}"
   end
 
-  protoc_cmd =
-    "     protoc \\\n" \
-    "       --ruby_out=#{file_dir} \\\n" \
-    "       --proto_path=#{file_dir} \\\n" \
-    "       #{file_path}"
+  protoc_cmd = "protoc --ruby_out=\"#{file_dir}\" --proto_path=\"#{file_dir}\" \"#{file_path}\""
 
-  puts "\n#{protoc_cmd}" if $verbose
+  puts "\n     #{protoc_cmd}" if $verbose
 
   `#{protoc_cmd}`
   abort "ERROR: Invalid schema! [#{filename}] Resolve error(s)." unless $CHILD_STATUS.success?
@@ -72,18 +68,19 @@ def compile_proto(filename)
 end
 
 def valid_msgtype?(compiled_proto, msg_type)
+  msg_types = []
+  File.foreach(compiled_proto) do |line|
+    if line.include?('::Google::Protobuf::DescriptorPool.generated_pool.lookup')
+      extracted_msg_type = line[/"([^"]*)"/, 1].freeze
+      msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
+    end
+  end
+
   if $verbose
     puts "\n>> Validate msgtype"
     puts "   msgtype : #{msg_type}"
     puts "   pb file : #{compiled_proto}"
-  end
-
-  msg_types = []
-  File.foreach(compiled_proto) do |line|
-    if line.lstrip.start_with?('add_message')
-      extracted_msg_type = line[/"([^"]*)"/, 1].freeze # regex: <add_message> 'msg_type' <do>
-      msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
-    end
+    puts "   pb types: #{msg_types}"
   end
 
   is_valid = msg_types.include?(msg_type)
@@ -173,7 +170,7 @@ def start
       args[:mode] = mode
     end
 
-    opts.on('-p', '--proto [FILENAME]', String, 'protobuf schema (.proto)') do |filename|
+    opts.on('-p', '--proto [FILENAME]', String, 'protobuf schema (.proto file)') do |filename|
       abort 'ERROR: Missing schema filename!' if filename.nil?
       abort "ERROR: Protobuf schema not found! [#{filename}]" unless File.file?(filename)
 

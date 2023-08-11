@@ -10,8 +10,8 @@
 to convert [protobuf](https://github.com/protocolbuffers/protobuf) messages
 from binary to [JSON](https://www.json.org/json-en.html) and vice versa.
 
-[Tested](./test/run_tests.sh) on Ubuntu and macOS.
-For details, please see [CI workflow](./.github/workflows/ci.yml).
+[Tested](./test/run_tests.sh) on Ubuntu, macOS and Windows runners.
+For details, see [CI workflow](./.github/workflows/ci.yml).
 
 ## Installation
 
@@ -85,6 +85,12 @@ Output:
 $ cat test.json
 {"id":123,"body":"test"}
 ```
+
+## Known Issues
+
+- It has been observed that the installed `protoc` and `google-protobuf` gem
+  may be incompatible and may result into compilation failure of the `input`
+  file.
 
 ## Contribute
 

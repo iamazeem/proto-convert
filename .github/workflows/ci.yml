@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        ruby-version: ['2.6', '2.7']
+        ruby-version: ['2.7']
 
     runs-on: ${{ matrix.os }}
 
@@ -26,23 +26,24 @@ jobs:
     - name: Checkout [${{ github.repository }}]
       uses: actions/checkout@v3
 
-    - name: Set up Ruby ${{ matrix.ruby-version }}
+    - name: Set up Ruby [${{ matrix.ruby-version }}]
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
 
     - name: Install protoc
-      uses: arduino/setup-protoc@master
+      uses: arduino/setup-protoc@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and install
+      shell: bash
       run: |
         gem build *.gemspec
         gem install *.gem
-        proto-convert -h
+        proto-convert --help
 
     - name: Run tests [${{ matrix.os }}]
-      if: ${{ runner.os != 'Windows' }}
+      shell: bash
       run: cd test && ./run_tests.sh
