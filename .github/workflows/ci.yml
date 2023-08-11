@@ -36,7 +36,6 @@ jobs:
       uses: arduino/setup-protoc@v2
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        version: 3.17.3
 
     - name: Build and install
       run: |
