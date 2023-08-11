@@ -86,6 +86,12 @@ $ cat test.json
 {"id":123,"body":"test"}
 ```
 
+## Known Issues
+
+- It has been observed that the installed `protoc` and `google-protobuf` gem
+  may be incompatible and may result into compilation failure of the `input`
+  file.
+
 ## Contribute
 
 - [Fork](https://github.com/iamazeem/proto-convert/fork) the project.
