@@ -70,7 +70,8 @@ end
 def valid_msgtype?(compiled_proto, msg_type)
   msg_types = []
   File.foreach(compiled_proto) do |line|
-    if line.include?('::Google::Protobuf::DescriptorPool.generated_pool.lookup')
+    line.strip!
+    if line.include?('::Google::Protobuf::DescriptorPool.generated_pool.lookup') && line.end_with?('.msgclass')
       extracted_msg_type = line[/"([^"]*)"/, 1].freeze
       msg_types.push(extracted_msg_type) unless extracted_msg_type.nil?
     end
