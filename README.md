@@ -4,7 +4,6 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-darkgreen.svg?style=flat-square)](https://github.com/iamAzeem/proto-convert/blob/master/LICENSE)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/iamAzeem/proto-convert?style=flat-square)
 [![RubyGems Downloads](https://img.shields.io/gem/dt/proto-convert?style=flat-square)](https://rubygems.org/gems/proto-convert)
-[![Buy Me a Coffee](https://img.shields.io/badge/Support-Buy%20Me%20A%20Coffee-orange.svg?style=flat-square)](https://www.buymeacoffee.com/iamazeem)
 
 [proto-convert](https://github.com/iamAzeem/proto-convert) is a CLI tool
 to convert [protobuf](https://github.com/protocolbuffers/protobuf) messages
