@@ -17,6 +17,6 @@ Gem::Specification.new do |spec|
 
   spec.executables    = ['proto-convert']
 
-  spec.add_development_dependency 'bundler', '~> 2.1', '>= 2.1.0'
+  spec.add_development_dependency 'bundler', '>= 2.1.0'
   spec.add_runtime_dependency 'google-protobuf', '~> 3.12'
 end
